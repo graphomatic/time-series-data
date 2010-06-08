@@ -1,0 +1,8 @@
+.autotest
+History.txt
+Manifest.txt
+README.txt
+Rakefile
+bin/ruby_timeseries_data
+lib/ruby_timeseries_data.rb
+test/test_ruby_timeseries_data.rb
