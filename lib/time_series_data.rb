@@ -1,5 +1,1 @@
-class TimeSeriesData
-  VERSION = '1.0.0'
-  
-  
-end
+require 'lib/time_series_data/base.rb'
