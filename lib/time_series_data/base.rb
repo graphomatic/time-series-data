@@ -7,9 +7,15 @@
 # data.
 class TimeSeriesData
   
-  def initialize()
-    # Initalize our internal data structures.
+  # Define the understood units of time that
+  # the timeseries data may be grouped into
+  UNITS = Array[ :none, :minute, :hour, :day, :week, :month ]
+  
+  attr_reader :unit
+  
+  def initialize(options)
     @buckets = Hash.new
+    @unit = options[:unit]
   end
   
 end
