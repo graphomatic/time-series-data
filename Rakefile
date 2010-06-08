@@ -3,10 +3,10 @@
 require 'rubygems'
 require 'hoe'
 
-Hoe.spec 'ruby_timeseries_data' do
-  # developer('FIX', 'FIX@example.com')
+Hoe.spec 'timeseries_data' do
+  developer('Paul Leader', 'paul@paulleader.co.uk')
 
-  # self.rubyforge_name = 'ruby_timeseries_datax' # if different than 'ruby_timeseries_data'
+  # self.rubyforge_name = 'timeseries_datax' # if different than 'timeseries_data'
 end
 
 # vim: syntax=ruby

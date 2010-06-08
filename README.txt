@@ -1,10 +1,10 @@
-= ruby_timeseries_data
+= timeseries_data
 
-* FIX (url)
+* http://github.com/graphomatic/timeseries-data
 
 == DESCRIPTION:
 
-FIX (describe your package)
+A collection of classes for manipulating time-series data in Ruby.
 
 == FEATURES/PROBLEMS:
 
@@ -16,7 +16,7 @@ FIX (describe your package)
 
 == REQUIREMENTS:
 
-* FIX (list of requirements)
+* None
 
 == INSTALL:
 

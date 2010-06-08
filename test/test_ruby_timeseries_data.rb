@@ -1,5 +1,5 @@
 require "test/unit"
-require "ruby_timeseries_data"
+require "timeseries_data"
 
 class TestRubyTimeseriesData < Test::Unit::TestCase
   def test_sanity
