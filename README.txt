@@ -1,6 +1,6 @@
-= timeseries_data
+= time_series_data
 
-* http://github.com/graphomatic/timeseries-data
+* http://github.com/graphomatic/time-series-data
 
 == DESCRIPTION:
 
