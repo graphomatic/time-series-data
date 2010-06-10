@@ -4,15 +4,26 @@
 
 == DESCRIPTION:
 
-A collection of classes for manipulating time-series data in Ruby.
+A collection of classes for manipulating time-series numerical data in Ruby.
 
-== FEATURES/PROBLEMS:
+Time series data is essentially any data keyed on date and/or time.
 
-* FIX (list of features or problems)
+== FEATURES (Planned)
+
+* Storage and manipulation of time-series data.
+* Aggregate functions such as average, sum, min, max etc by date.
+* Variable granularity by time unit: second, minute, hour, day etc.
+* Time series functions such as weighted averages.
 
 == SYNOPSIS:
 
-  FIX (code sample of usage)
+  gigawatts = TimeSeriesData( :day )
+
+  gigawatts["22:04 Nov 12 1955"].store(1.21)
+
+  # ...add some more data
+
+  puts "Biggest lightening strike of Nov 12 1955" + gigawatts["Nov 12 1955"].max.to_s
 
 == REQUIREMENTS:
 
@@ -20,7 +31,7 @@ A collection of classes for manipulating time-series data in Ruby.
 
 == INSTALL:
 
-* FIX (sudo gem install, anything else)
+* sudo gem install time-series-data
 
 == DEVELOPERS:
 
