@@ -11,11 +11,20 @@ class TimeSeriesData
   # the timeseries data may be grouped into
   UNITS = Array[ :none, :minute, :hour, :day, :week, :month ]
   
-  attr_reader :unit
+  
   
   def initialize(options)
     @buckets = Hash.new
-    @unit = options[:unit]
+    self.unit = options[:unit]
+  end
+  
+  attr_reader :unit
+  def unit=(u)
+    if not UNITS.include?(u)
+      raise ArgumentError, 'Unit #{u.to_s} is not one of the allowed types'
+    else
+      @unit = u
+    end
   end
   
 end
