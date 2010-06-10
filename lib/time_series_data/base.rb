@@ -11,8 +11,8 @@ class TimeSeriesData
   # the timeseries data may be grouped into
   UNITS = Array[ :none, :minute, :hour, :day, :week, :month ]
   
-  
-  
+  # Create new TimeSeriesData collection with the 
+  # supplied granularity.
   def initialize(unit_type)
     @buckets = Hash.new
     self.unit = unit_type

@@ -6,6 +6,7 @@ require 'hoe'
 namespace :test do
   task :unit do
     ruby 'test/test_time_series_data.rb'
+    ruby 'test/test_time_series_data_bucket.rb'
   end
 end
 
