@@ -13,15 +13,15 @@ class TimeSeriesData
   
   
   
-  def initialize(options)
+  def initialize(unit_type)
     @buckets = Hash.new
-    self.unit = options[:unit]
+    self.unit = unit_type
   end
   
   attr_reader :unit
   def unit=(u)
     if not UNITS.include?(u)
-      raise ArgumentError, 'Unit #{u.to_s} is not one of the allowed types'
+      raise ArgumentError, "Unit #{u} is not one of the allowed types"
     else
       @unit = u
     end

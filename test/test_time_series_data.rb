@@ -9,7 +9,7 @@ class TestTimeSeriesData < Test::Unit::TestCase
     @data = Hash.new()
     
     TimeSeriesData::UNITS.each do | unit |
-      @data[ unit ] = TimeSeriesData.new( :unit => unit )
+      @data[ unit ] = TimeSeriesData.new( unit )
     end
   end
 
@@ -31,12 +31,12 @@ class TestTimeSeriesData < Test::Unit::TestCase
     # Test first during creation of a new object
     # that an illegal type will raise an ArgumentError
     assert_raise ArgumentError, "Failed to raise ArgumentError when initializing with bad unit" do
-      test_obj = TimeSeriesData.new( :unit => :notaunit )
+      test_obj = TimeSeriesData.new( :notaunit )
     end
     
     # Create a test object with a know good unit and test
     # setting it to an invalid unit.
-    test_obj = TimeSeriesData.new( :unit => TimeSeriesData::UNITS.first )
+    test_obj = TimeSeriesData.new( TimeSeriesData::UNITS.first )
     assert_raise ArgumentError, "Failed to raise ArgumentError when setting bad unit" do
       test_obj.unit = :notaunit
     end
