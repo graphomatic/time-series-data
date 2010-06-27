@@ -12,7 +12,7 @@ class TimeSeriesData
  
   # Define the understood units of time that
   # the timeseries data may be grouped into
-  UNITS = [ :second, :minute, :hour, :day, :week, :month ]
+  UNITS = [ :second, :minute, :hour, :day, :week, :month, :year ]
   UNITS.freeze
   
   # Create new TimeSeriesData collection with the 
@@ -25,6 +25,5 @@ class TimeSeriesData
     end
 
   end
-
   
 end
