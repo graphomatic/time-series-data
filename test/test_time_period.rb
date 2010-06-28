@@ -7,11 +7,17 @@ class TestTimeSeriesDataPeriod < Test::Unit::TestCase
   # Create a series of test objects,
   # one for each allowed grouping period.
   def setup
-    @data = TimeSeriesData::Period.new( "1st Jan 2010 12:45:30am", :month)
+    @test_start_point = "2010-01-01T00:45:30+00:00"
+    @data = TimeSeriesData::Period.new( @test_start_point, :month)
   end
 
   def test_initialize
     assert_instance_of( TimeSeriesData::Period, @data, "Object it a TimeSeriesData::Period object" )
+  end
+  
+  def test_accessors
+    assert_equal( @test_start_point, @data.start.to_s )
+    assert_equal( :month, @data.duration )
   end
   
   def test_invalid_time
