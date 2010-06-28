@@ -17,13 +17,43 @@ Time series data is essentially any data keyed on date and/or time.
 
 == SYNOPSIS:
 
+  # Data is stored in children of the DataPoint class.
+  class LighteningStrikes < TimeSeriesData::DataPoint
+    attr_reader :where
+
+    def initialize( when, value, where )
+      super(when, value)
+      @where = where
+    end
+
+  end
+
+  # Create a series grouped by day
   gigawatts = TimeSeriesData( :day )
 
-  gigawatts["22:04 Nov 12 1955"].store(1.21)
-
+  clock_tower = TimeSeriesData::DataPoint.new( "22:04 Nov 12 1955",
+                                               1.21,
+                                               "the clock tower" )
+  gigawatts << clock_tower
   # ...add some more data
 
-  puts "Biggest lightening strike of Nov 12 1955" + gigawatts["Nov 12 1955"].max.to_s
+  # Get the bucket for one day and query it.
+  biggest = gigawatts["Nov 12 1955"].max
+  puts "Biggest lightening strike of Nov 12 1955 was #{biggest.value} which struck #{biggest.where}"
+
+  puts "The average lightening strike on Nov 12 1955 was #{gigawatts["Nov 12 1955"].mean}"
+
+  # Get the exponentially weighted rolling average for the entire set.
+  # The TimeSeriesData collection computes the averages and sets the value in the buckets
+  # returned.
+  gigawatts.rolling_average( :type => :ewa, :factor => 0.25 ).each_index do |date, average|
+    puts "#{date} -> #{average}"
+  end
+
+  # Get the 5 day sliding window rolling average for just 1955.
+  gigawatts["1st Jan 1955", "31st Dec 1955"].rolling_average( :type => :window, :width => 5 ).each_index do |date, average|
+    puts "#{date} -> #{average}"
+  end
 
 == REQUIREMENTS:
 
