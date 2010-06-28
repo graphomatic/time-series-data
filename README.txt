@@ -38,10 +38,10 @@ Time series data is essentially any data keyed on date and/or time.
   # ...add some more data
 
   # Get the bucket for one day and query it.
-  biggest = gigawatts["Nov 12 1955"].max
+  nov_12th = gigawatts["Nov 12 1955"]
+  biggest = nov_12th.max
   puts "Biggest lightening strike of Nov 12 1955 was #{biggest.value} which struck #{biggest.where}"
-
-  puts "The average lightening strike on Nov 12 1955 was #{gigawatts["Nov 12 1955"].mean}"
+  puts "The average lightening strike on Nov 12 1955 was #{nov_12th.mean}"
 
   # Get the exponentially weighted rolling average for the entire set.
   # The TimeSeriesData collection computes the averages and sets the value in the buckets
