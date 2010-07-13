@@ -89,10 +89,6 @@ class TimeSeriesData::Period
   end
   
   def ===( comp )
-    puts self.start.to_s
-    puts self.stop.to_s
-    puts comp.to_s
-    
     if comp.is_a? String then
       comp = Time.parse( comp )
     elsif comp.is_a? DateTime then
@@ -102,7 +98,7 @@ class TimeSeriesData::Period
     else
       raise ArgumentError, "Right hand side of TimeSeriesData::Period.=== must be either a parseable string or a DateTime"
     end
-    puts "Start comparing"
+
     if ( comp >= @start ) and
        comp <= self.stop
       true
