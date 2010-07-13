@@ -8,21 +8,24 @@
 # object.
 class TimeSeriesData::Bucket
   
+  attr_reader :period
+  
   # Create new bucket for the given moment in time
-  # and the granularity.
-  def initialize( moment, unit )
-    @moment = moment
-    @unit   = unit
-    @items  = Array.new()
-  end
-  
-  # Add an item to the bucket.
-  def <<(item)
-    if item.is_a? Numeric
-      @items << item
-    else
-      raise ArgumentError, "TimeSeriesData items must be numeric"
+  def initialize( period )
+    if not period.is_a? TimeSeriesData::Period
+      raise ArgumentError, "TimeSeriesData::Period expected as argument to TimeSeriesData::Bucket.new, got #{period.class}"
     end
+    @period = period
+    
+    # Setup our basic data-structures
+    @data_points = Array.new() 
   end
   
+  def <<( item )
+    if not item.is_a? TimeSeriesData::DataPoint
+      raise ArgumentError, "TimeSeriesData::DataPoint expected as argument to TimeSeriesData::Bucket.<<, got #{item.class}"
+    end
+    
+    @data_points << item
+  end
 end

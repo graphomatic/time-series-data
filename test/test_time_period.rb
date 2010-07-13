@@ -7,7 +7,7 @@ class TestTimeSeriesDataPeriod < Test::Unit::TestCase
   # Create a series of test objects,
   # one for each allowed grouping period.
   def setup
-    @test_start_point = "2010-01-01T00:45:30+00:00"
+    @test_start_point = "Fri Jan 01 00:45:30 +0000 2010"
     @data = TimeSeriesData::Period.new( @test_start_point, :month)
   end
 
@@ -18,6 +18,10 @@ class TestTimeSeriesDataPeriod < Test::Unit::TestCase
   def test_accessors
     assert_equal( @test_start_point, @data.start.to_s )
     assert_equal( :month, @data.duration )
+  end
+  
+  def test_stop_calculation
+    assert_equal( "Mon Feb 01 00:45:29 +0000 2010", @data.stop.to_s )
   end
   
   def test_invalid_time
@@ -54,6 +58,34 @@ class TestTimeSeriesDataPeriod < Test::Unit::TestCase
     @a = TimeSeriesData::Period.new( "1st Jan 2010 12:45:30am", :year)
     @b = TimeSeriesData::Period.new( "2st Jan 2010 12:45:30am", :month)  
     assert( @a < @b, "< operator comparison" ) 
+  end
+  
+  def test_case_equality_positive
+    # The case equality operator tests whether the right hand argument
+    # is either a period or moment that is contained by the period.
+    assert( @data === "Fri Jan 01 00:45:30 +0000 2010",
+            "=== failed where RHS (String) is the period start point" )
+    assert( @data === DateTime.parse("Fri Jan 01 00:45:30 +0000 2010"),
+            "=== failed where RHS (DateTime) is the period start point" )
+    assert( @data === "Fri Jan 01 00:46:30 +0000 2010",
+            "=== failed where RHS (string) is contained by the period" )
+    assert( @data === DateTime.parse("Fri Jan 01 00:46:30 +0000 2010"),
+            "=== failed where RHS (string) is contained by the period" )
+  end
+            
+  def test_case_equality_negative_string
+    assert( ! ( @data === "2010-05-02T00:45:30+00:00" ),
+            "=== failed where RHS (String) is not contained by the period" )
+  end
+
+  def test_case_equality_negative_datetime
+    assert( ! ( @data === Time.parse("2010-02-02T00:45:30+00:00") ),
+            "=== failed where RHS (Time) is not contained by the period" )    
+  end
+  
+  def test_case_equality_negative_time
+    assert( ! ( @data === Time.parse("2010-02-02T00:45:30+00:00") ),
+            "=== failed where RHS (Time) is not contained by the period" )    
   end
   
 end
