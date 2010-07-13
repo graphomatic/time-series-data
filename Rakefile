@@ -8,6 +8,7 @@ namespace :test do
     ruby 'test/test_time_series_data.rb'
     ruby 'test/test_time_series_data_bucket.rb'
     ruby 'test/test_time_period.rb'
+    ruby 'test/test_time_series_data_data_point.rb'
   end
 end
 
