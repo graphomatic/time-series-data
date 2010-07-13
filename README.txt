@@ -29,6 +29,8 @@ Time series data is essentially any data keyed on date and/or time.
   end
 
   # Create a series grouped by day
+  # TimeSeries is a collection of TimeSeries::Bucket objects
+  # indexed by the time period.
   gigawatts = TimeSeriesData( :day )
 
   clock_tower = TimeSeriesData::DataPoint.new( "22:04 Nov 12 1955",
@@ -42,17 +44,22 @@ Time series data is essentially any data keyed on date and/or time.
   biggest = nov_12th.max
   puts "Biggest lightening strike of Nov 12 1955 was #{biggest.value} which struck #{biggest.where}"
   puts "The average lightening strike on Nov 12 1955 was #{nov_12th.mean}"
+  # Display all the data for that one bucket.
+  nov_12th.each_item { |i| puts i.to_s }
 
-  # Get the exponentially weighted rolling average for the entire set.
-  # The TimeSeriesData collection computes the averages and sets the value in the buckets
-  # returned.
-  gigawatts.rolling_average( :type => :ewa, :factor => 0.25 ).each_index do |date, average|
-    puts "#{date} -> #{average}"
-  end
 
-  # Get the 5 day sliding window rolling average for just 1955.
-  gigawatts["1st Jan 1955", "31st Dec 1955"].rolling_average( :type => :window, :width => 5 ).each_index do |date, average|
-    puts "#{date} -> #{average}"
+  # Add series based calculations such as rolling averages that
+  # cannot be computed based on the data in a single bucket.
+  # Methods are added to each of the buckets for the selected
+  # computations.  There are mutating (with !) and non mutating versions
+
+  # Add Exponentially weighted rolling average with a factor of 0.25,
+  # and a sliding window rolling mean with a window of two either side.
+  gigawatts.compute!( :ewra, :swrm, { :ewra_factor => 0.25, :swra_window = 2 } )
+
+  # Output the results
+  gigawatts.each do |i|
+    puts i.ewra
   end
 
 == REQUIREMENTS:
