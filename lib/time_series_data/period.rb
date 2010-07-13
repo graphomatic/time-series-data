@@ -6,6 +6,8 @@
 # start time and duration.
 # Time periods are immutable
 
+require 'date'
+
 class TimeSeriesData::Period
   
   include Comparable
