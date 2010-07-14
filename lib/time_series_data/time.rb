@@ -19,3 +19,11 @@ class DateTime
   end
 
 end
+
+class Date
+
+  def to_time
+    Time.parse( self.to_s )
+  end
+
+end

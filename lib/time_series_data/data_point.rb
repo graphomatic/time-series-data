@@ -10,15 +10,13 @@ class TimeSeriesData::DataPoint
   
   def initialize( moment, value )
     # Type checks
-    if ( not moment.is_a? DateTime ) then
-      raise ArgumentError, "DateTime expected for first argument, got a #{moment.class}"
-    end
+    @moment = TimeSeriesData::Normalise_Time( moment )
+    
     if ( not value.is_a? Numeric ) then
       raise ArgumentError, "Numeric expected for second argument, got a #{moment.class}"
     end
-
-    @moment = moment
     @value = value
+
   end
     
 end

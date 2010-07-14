@@ -26,4 +26,20 @@ class TimeSeriesData
 
   end
   
+  # Class method to normalise times from
+  # String, Date, DateTime or Time objects to Time objects
+  def TimeSeriesData.Normalise_Time( time )
+    moment = case time
+      when Time
+        time
+      when DateTime, Date
+        time.to_time
+      when String
+        Time.parse( time )
+      else
+        raise ArgumentError, "Expected Time, DateTime, Date, or parseable String, got a #{time.class}"
+      end
+    return moment        
+  end
+  
 end

@@ -7,7 +7,7 @@ class TestTimeSeriesDataBucketDataPoint < Test::Unit::TestCase
   # Create a series of test objects,
   # one for each allowed grouping period.
   def setup
-    @when = DateTime.parse("10th January 2010")
+    @when = Time.parse("10th January 2010")
     @what = 100
     @data = TimeSeriesData::DataPoint.new( @when, @what )
   end
