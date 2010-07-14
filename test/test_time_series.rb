@@ -8,9 +8,23 @@ class TestTimeSeries < Test::Unit::TestCase
   def setup
     @data = Hash.new()
     
+    # Create TimeSeries collections for each
+    # resolution.
     TimeSeries::UNITS.each do | unit |
       @data[ unit ] = TimeSeries.new( unit )
     end
+    
+    # Setup a bunch of datapoints in two different months
+    @start_june = Time.parse("12:00 12th June 2010")
+    @datapoints_june = (1..1).collect do |i|
+      TimeSeries::DataPoint.new( @start_june + i, i)
+    end
+    
+    @start_july = Time.parse("12:00 12th July 2010")
+    @datapoints_july = (1..1).collect do |i|
+      TimeSeries::DataPoint.new( @start_july + i, i)
+    end
+    
     
   end
 
@@ -31,6 +45,16 @@ class TestTimeSeries < Test::Unit::TestCase
     assert_raise TypeError, "Failed to raise TypeError when tyring to change constant" do
       TimeSeries::UNITS << :notaunit
     end
+  end
+  
+  def test_push_retrieve_datapoints
+    # Push the june and july data points into the
+    # TimeSeries object with :month resolution.
+    @datapoints_june.each { |dp| @data[ :month] << dp }
+    @datapoints_july.each { |dp| @data[ :month] << dp }
+    
+    assert_equal( @datapoints_june, @data[ :month][ "June 2010" ].collect )
+    assert_equal( @datapoints_july, @data[ :month][ "July 2010" ].collect )
   end
 
 end
