@@ -18,5 +18,10 @@ class TimeSeriesData::DataPoint
     @value = value
 
   end
+
+  # Compare based on the time of the data point.
+  def <=>( rhs )
+    self.moment <=> rhs.moment
+  end
     
 end

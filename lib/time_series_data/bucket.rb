@@ -7,7 +7,8 @@
 # This should only ever be created by a TimeSeriesData
 # object.
 class TimeSeriesData::Bucket
-  
+  include Enumerable
+
   attr_reader :period
   
   # Create new bucket for the given moment in time
@@ -28,4 +29,9 @@ class TimeSeriesData::Bucket
     
     @data_points << item
   end
+  
+  def each( &block )
+    @data_points.each( &block )
+  end
+  
 end

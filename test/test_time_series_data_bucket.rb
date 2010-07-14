@@ -1,5 +1,6 @@
 require "test/unit"
 require "lib/time_series_data"
+require 'set'
 
 class TestTimeSeriesDataBucket < Test::Unit::TestCase
   
@@ -7,8 +8,19 @@ class TestTimeSeriesDataBucket < Test::Unit::TestCase
   # one for each allowed grouping period.
   def setup
     @test_start_point = "2010-01-01T00:45:30+00:00"
+    @start_time = Time.parse( @test_start_point )
     @period = TimeSeriesData::Period.new( @test_start_point, :month)
     @data = TimeSeriesData::Bucket.new( @period )
+    
+    # Setup a bunch of datapoints in the correct period
+    @good_datapoints = (1..10).collect do |i|
+      TimeSeriesData::DataPoint.new( @start_time + i, i)
+    end
+    
+    @bad_datapoints = (1..10).collect do |i|
+      TimeSeriesData::DataPoint.new( @start_time + i, i)
+    end
+    
   end
 
   def test_initialize
@@ -31,5 +43,45 @@ class TestTimeSeriesDataBucket < Test::Unit::TestCase
       @data << "Not a DataPoint"
     end
   end
+  
+  def test_enumerable
+    # Add the data to the bucket.
+    @good_datapoints.each do |dp|
+      @data << dp
+    end
+    
+    # Use Sets rather than Arrays as there is
+    # no guarentee that the items in the Bucket will be returned in order 
+    
+    # Set up a set to compare against.
+    @test_values = Set.new( (1..10).collect { |i| i } )
+    
+    # Now extract the values of each
+    @values = Set.new( @data.collect { |i| i.value } )
+    assert_equal( @test_values, @values, "Collect failed to return the correct items")
+    
+  end
+  
+  # Test that the sort method works, relies on
+  # DataPoint.<=> working correctly
+  def test_sortability
+    # Push the same set of data in twice.
+    # so contains [1, .., 10, 1, .., 10]
+    # which is not sorted.
+    @good_datapoints.each do |dp|
+      @data << dp
+    end
+    @good_datapoints.each do |dp|
+      @data << dp
+    end
+    
+    # Now extract the values of each
+    @test_values = (1..10).collect { |i| [i, i] }.flatten
+    
+    @values = @data.sort.collect { |i| i.value }
+    
+    assert_equal( @test_values, @values, "Sort failed to sort the items correctly")
+  end
+  
   
 end
