@@ -1,4 +1,4 @@
-= time_series_data
+= time_series
 
 * http://github.com/graphomatic/time-series-data
 
@@ -18,7 +18,7 @@ Time series data is essentially any data keyed on date and/or time.
 == SYNOPSIS:
 
   # Data is stored in children of the DataPoint class.
-  class LighteningStrikes < TimeSeriesData::DataPoint
+  class LighteningStrikes < TimeSeries::DataPoint
     attr_reader :where
 
     def initialize( when, value, where )
@@ -31,9 +31,9 @@ Time series data is essentially any data keyed on date and/or time.
   # Create a series grouped by day
   # TimeSeries is a collection of TimeSeries::Bucket objects
   # indexed by the time period.
-  gigawatts = TimeSeriesData( :day )
+  gigawatts = TimeSeries( :day )
 
-  clock_tower = TimeSeriesData::DataPoint.new( "22:04 Nov 12 1955",
+  clock_tower = TimeSeries::DataPoint.new( "22:04 Nov 12 1955",
                                                1.21,
                                                "the clock tower" )
   gigawatts << clock_tower

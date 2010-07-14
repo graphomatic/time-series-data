@@ -5,10 +5,10 @@ require 'hoe'
 
 namespace :test do
   task :unit do
-    ruby 'test/test_time_series_data.rb'
-    ruby 'test/test_time_series_data_bucket.rb'
+    ruby 'test/test_time_series.rb'
+    ruby 'test/test_time_series_bucket.rb'
     ruby 'test/test_time_period.rb'
-    ruby 'test/test_time_series_data_data_point.rb'
+    ruby 'test/test_time_series_data_point.rb'
   end
 end
 

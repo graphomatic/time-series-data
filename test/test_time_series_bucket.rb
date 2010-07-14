@@ -1,41 +1,41 @@
 require "test/unit"
-require "lib/time_series_data"
+require "lib/time_series"
 require 'set'
 
-class TestTimeSeriesDataBucket < Test::Unit::TestCase
+class TestTimeSeriesBucket < Test::Unit::TestCase
   
   # Create a series of test objects,
   # one for each allowed grouping period.
   def setup
     @test_start_point = "2010-01-01T00:45:30+00:00"
     @start_time = Time.parse( @test_start_point )
-    @period = TimeSeriesData::Period.new( @test_start_point, :month)
-    @data = TimeSeriesData::Bucket.new( @period )
+    @period = TimeSeries::Period.new( @test_start_point, :month)
+    @data = TimeSeries::Bucket.new( @period )
     
     # Setup a bunch of datapoints in the correct period
     @good_datapoints = (1..10).collect do |i|
-      TimeSeriesData::DataPoint.new( @start_time + i, i)
+      TimeSeries::DataPoint.new( @start_time + i, i)
     end
     
     @bad_datapoints = (1..10).collect do |i|
-      TimeSeriesData::DataPoint.new( @start_time + i, i)
+      TimeSeries::DataPoint.new( @start_time + i, i)
     end
     
   end
 
   def test_initialize
-    assert_instance_of( TimeSeriesData::Bucket, @data, "Object it a TimeSeriesData::Bucket object" )
+    assert_instance_of( TimeSeries::Bucket, @data, "Object it a TimeSeries::Bucket object" )
   end
   
   def test_raise_from_initialize
-    assert_raise ArgumentError, "Didn't raise ArgumentError when a TimeSeriesData::Period was not passed" do
-      @x = TimeSeriesData::Bucket.new( "Not a period" )
+    assert_raise ArgumentError, "Didn't raise ArgumentError when a TimeSeries::Period was not passed" do
+      @x = TimeSeries::Bucket.new( "Not a period" )
     end
   end
 
   def test_append
     assert_nothing_raised "Raised exception when valid DataPoint appended to the bucket" do
-      @data_point = TimeSeriesData::DataPoint.new( DateTime.parse("2010-01-02T00:45:30+00:00"), 1000 )
+      @data_point = TimeSeries::DataPoint.new( DateTime.parse("2010-01-02T00:45:30+00:00"), 1000 )
       @data << @data_point
     end
     

@@ -9,13 +9,13 @@
 require 'date'
 require 'time'
 
-class TimeSeriesData::Period
+class TimeSeries::Period
   
   include Comparable
   
   attr_reader :start, :duration
   
-  # Create a new TimeSeriesData::Period
+  # Create a new TimeSeries::Period
   # with the specified start point and duration
   # The start point can be specified as a string representing
   # a date/time or a Ruby Date or DateTime object
@@ -35,8 +35,8 @@ class TimeSeriesData::Period
       raise ArgumentError, "#{start} was not a valid point in time"
     end
     
-    unless TimeSeriesData::UNITS.member?( duration )
-      raise ArgumentError, "Duration must be a member of TimeSeriesData::UNITS"
+    unless TimeSeries::UNITS.member?( duration )
+      raise ArgumentError, "Duration must be a member of TimeSeries::UNITS"
     end
     
     @duration = duration
@@ -64,7 +64,7 @@ class TimeSeriesData::Period
         dt.to_time
       end
     
-    TimeSeriesData::Period.new( successor, @duration )
+    TimeSeries::Period.new( successor, @duration )
   end
   
   def stop
@@ -84,7 +84,7 @@ class TimeSeriesData::Period
     elsif @start < obj.start
       -1
     else
-      TimeSeriesData::UNITS.index( @duration ) <=> TimeSeriesData::UNITS.index( obj.duration )
+      TimeSeries::UNITS.index( @duration ) <=> TimeSeries::UNITS.index( obj.duration )
     end
   end
   
@@ -96,7 +96,7 @@ class TimeSeriesData::Period
     elsif comp.is_a? Time then
       nil # That's fine...
     else
-      raise ArgumentError, "Right hand side of TimeSeriesData::Period.=== must be either a parseable string or a DateTime"
+      raise ArgumentError, "Right hand side of TimeSeries::Period.=== must be either a parseable string or a DateTime"
     end
 
     if ( comp >= @start ) and

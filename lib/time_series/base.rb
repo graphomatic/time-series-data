@@ -6,7 +6,7 @@
 # It provides methods to group and aggregate
 # data.
 
-class TimeSeriesData
+class TimeSeries
 
   attr_reader :unit
  
@@ -15,7 +15,7 @@ class TimeSeriesData
   UNITS = [ :second, :minute, :hour, :day, :week, :month, :year ]
   UNITS.freeze
   
-  # Create new TimeSeriesData collection with the 
+  # Create new TimeSeries collection with the 
   # supplied granularity.
   def initialize(unit_type)
     @buckets = Hash.new
@@ -28,7 +28,7 @@ class TimeSeriesData
   
   # Class method to normalise times from
   # String, Date, DateTime or Time objects to Time objects
-  def TimeSeriesData.Normalise_Time( time )
+  def TimeSeries.Normalise_Time( time )
     moment = case time
       when Time
         time

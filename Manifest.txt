@@ -8,5 +8,5 @@ lib/timeseries_data/base.rb
 lib/timeseries_data/bucket.rb
 lib/timeseries_data/period.rb
 test/test_time_period.rb
-test/test_time_series_data.rb
-test/test_time_series_data_bucket.rb
+test/test_time_series.rb
+test/test_time_series_bucket.rb
