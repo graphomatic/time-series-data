@@ -88,4 +88,10 @@ class TestTimeSeriesPeriod < Test::Unit::TestCase
             "=== failed where RHS (Time) is not contained by the period" )    
   end
   
+  def test_eql
+    @a = TimeSeries::Period.new( @test_start_point, :month)
+    @b = TimeSeries::Period.new( @test_start_point, :month)
+    assert( @a.eql?( @b), "Two identical time periods not eql?" )
+  end
+  
 end

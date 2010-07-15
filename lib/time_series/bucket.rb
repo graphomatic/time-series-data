@@ -6,6 +6,8 @@
 # time period held within a TimeSeries object
 # This should only ever be created by a TimeSeries
 # object.
+require 'set'
+
 class TimeSeries::Bucket
   include Enumerable
 
@@ -33,5 +35,21 @@ class TimeSeries::Bucket
   def each( &block )
     @data_points.each( &block )
   end
+  
+  # Does the bucket contain any data?
+  def empty?
+    @data_points.length < 1
+  end
+  
+  def length
+    @data_points.length
+  end
+  
+  def ==(other)
+    self.period.eql?(other.period) && 
+      ( other.collect == @data_points )
+  end
+  
+  alias eql? ==
   
 end

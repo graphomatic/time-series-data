@@ -84,4 +84,32 @@ class TestTimeSeriesBucket < Test::Unit::TestCase
   end
   
   
+  def test_is_empty
+    assert( @data.empty? )
+    
+    @good_datapoints.each do |dp|
+      @data << dp
+    end
+    assert( @data.empty? == false)
+  end
+  
+  def test_length
+    @good_datapoints.each do |dp|
+      @data << dp
+    end
+    assert_equal( 10, @data.length )
+  end
+  
+  def test_eql
+    @a = TimeSeries::Bucket.new( @period )
+    @b = TimeSeries::Bucket.new( @period )
+    
+    @good_datapoints.each do |dp|
+      @a << dp
+      @b << dp
+    end
+    
+    assert( @a.eql?( @b ), "Two identical buckets not eql?")
+  end
+  
 end

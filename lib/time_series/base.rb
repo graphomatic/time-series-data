@@ -5,8 +5,10 @@
 # This class holds data as a time series.
 # It provides methods to group and aggregate
 # data.
+require 'set'
 
 class TimeSeries
+  include Enumerable
 
   attr_reader :unit
  
@@ -25,7 +27,7 @@ class TimeSeries
     # The default value is an empty bucket with
     # a start point and resolution.
     @buckets = Hash.new do |hash, key|
-      period = TimeSeries::Period.new( key, @resolution_unit )
+      period = create_period( key )
       @buckets[ key ] = TimeSeries::Bucket.new( period )
     end
     
@@ -34,7 +36,11 @@ class TimeSeries
     end
 
   end
-  
+
+  def each( &block )
+    @buckets.each( &block )
+  end
+ 
   # Class method to normalise times from
   # String, Date, DateTime or Time objects to Time objects
   def TimeSeries.Normalise_Time( time )
@@ -56,11 +62,78 @@ class TimeSeries
     @buckets[ startpoint ] << datapoint
   end
   
-  def []( moment )
-    startpoint = calculate_bucket( TimeSeries.Normalise_Time( moment ) )
-    @buckets[ startpoint ]
+  # Select the single bucket based on a moment.
+  # The moment is normalised to the relevant period for this collection
+  # based on the resolution of the collection.
+  def []( *moment )
+    if moment.length > 1 then
+      return self.slice( moment[0], moment[1] )
+    end
+    if moment[0].is_a? TimeSeries::Period then
+      @buckets[ moment[0] ]
+    else
+      @buckets[ calculate_bucket( TimeSeries.Normalise_Time( moment[0] ) ) ]
+    end
+  end
+
+  # Select all buckets from start to stop.
+  # Start and stop are normalised to the period they occur in.
+  def slice( start, stop )
+    
+    start_point = create_period( calculate_bucket( TimeSeries.Normalise_Time( start ) ) )
+    stop_point = create_period( calculate_bucket( TimeSeries.Normalise_Time( stop ) ) )
+
+    # Create a new TimeSeries object with the same resolution as
+    # self, and clones of each bucket from start to stop.
+    
+    new_slice = TimeSeries.new( @resolution_unit )
+    #puts "Slice from #{start_point} to #{stop_point}"
+    ( start_point .. stop_point ).each do |period|
+      #puts "#{@buckets[period].length} items in bucket for #{period}"
+      if not @buckets[period].empty? then
+        puts "Cloning"
+        new_slice[period] = @buckets[period].clone
+      end
+    end
+    
+    new_slice
   end
   
+  def to_s
+    s = <<END
+\n\nTimeSeries - Resolution: #{@resolution_unit}
+#{@buckets.length} buckets
+END
+
+    @buckets.each_pair do | key, bucket |
+      s += "#{key} <#{key.class}> (#{key.hash}) -> #{bucket.length} datapoints\n"
+    end
+    
+    s
+  end
+  
+  def ==(x)
+    x.buckets == @buckets && x.unit == @unit
+  end
+  
+  alias eql? ==
+
+  def keys
+    @buckets.keys
+  end
+
+protected
+
+  # Assign a bucket to a slot in the array directly
+  # Useful for performing deep copies
+  def []=( period, bucket )
+    puts "Assigning #{bucket} to #{period}"
+    @buckets[ period ] = bucket
+  end
+  
+  def buckets
+    @buckets
+  end
   
 private
 
@@ -90,8 +163,16 @@ private
         sec, min, hour, day, month = 0
     end
       
-    Time.utc(sec, min, hour, day, month, year, wday, yday, isdst, zone)
+    create_period( Time.utc(sec, min, hour, day, month, year, wday, yday, isdst, zone) )
     
+  end
+  
+  def create_period( startpoint )
+    if startpoint.is_a? TimeSeries::Period then
+      startpoint
+    else
+      TimeSeries::Period.new( startpoint, @resolution_unit )
+    end
   end
   
 end

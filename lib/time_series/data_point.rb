@@ -23,5 +23,12 @@ class TimeSeries::DataPoint
   def <=>( rhs )
     self.moment <=> rhs.moment
   end
+  
+  def ==(rhs)
+    @moment == rhs.moment &&
+      @value == rhs.value
+  end
+  
+  alias eql? ==
     
 end

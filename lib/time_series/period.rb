@@ -107,4 +107,23 @@ class TimeSeries::Period
     end
   end
   
+  def to_s
+    "Period: from #{@start} for 1 #{@duration}"
+  end
+  
+  def ==(x)
+    ( @start == x.start ) && 
+      ( @duration == x.duration )
+  end
+  
+  alias eql? ==
+  
+  def hash
+    code = 17
+    code = 37 * code + @start.to_i.hash
+    code = 37 * code + @duration.hash
+    
+    code
+  end
+  
 end
