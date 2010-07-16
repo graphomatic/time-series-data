@@ -87,11 +87,14 @@ class TestTimeSeries < Test::Unit::TestCase
     
     @expected = TimeSeries.new( :month )
     @datapoints_july.each { |dp| @expected << dp }
-    #@datapoints_august.each { |dp| @expected << dp }
+    @datapoints_august.each { |dp| @expected << dp }
     
-    #puts @data[ :month ]
-    #puts @data[ :month][ "July 2010", "August 2010" ]
-    assert_equal( @expected, @data[ :month][ "July 2010", "July 2010" ], "Slice failed to retrieve correct data" )
+    assert_equal( @expected, @data[ :month][ "July 2010", "August 2010" ], "Slice failed to retrieve correct data" )
+    
+  end
+  
+  
+  def test_calculate
     
   end
 

@@ -87,11 +87,9 @@ class TimeSeries
     # self, and clones of each bucket from start to stop.
     
     new_slice = TimeSeries.new( @resolution_unit )
-    #puts "Slice from #{start_point} to #{stop_point}"
+
     ( start_point .. stop_point ).each do |period|
-      #puts "#{@buckets[period].length} items in bucket for #{period}"
       if not @buckets[period].empty? then
-        puts "Cloning"
         new_slice[period] = @buckets[period].clone
       end
     end
@@ -127,7 +125,6 @@ protected
   # Assign a bucket to a slot in the array directly
   # Useful for performing deep copies
   def []=( period, bucket )
-    puts "Assigning #{bucket} to #{period}"
     @buckets[ period ] = bucket
   end
   
