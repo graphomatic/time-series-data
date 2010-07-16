@@ -30,6 +30,13 @@ class TimeSeries::Bucket
     end
     
     @data_points << item
+    
+    # Update the sum cache
+    if @sum.nil?
+      @sum = item.value
+    else
+      @sum += item.value
+    end
   end
   
   def each( &block )
@@ -51,5 +58,13 @@ class TimeSeries::Bucket
   end
   
   alias eql? ==
+  
+  def sum
+    if @sum.nil?
+      @sum = self.inject { |sum, n| sum + n }
+    else
+      @sum
+    end
+  end
   
 end

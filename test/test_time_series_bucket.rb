@@ -112,4 +112,16 @@ class TestTimeSeriesBucket < Test::Unit::TestCase
     assert( @a.eql?( @b ), "Two identical buckets not eql?")
   end
   
+  def test_sum
+    @a = TimeSeries::Bucket.new( @period )
+    total = 0
+    
+    @good_datapoints.each do |dp|
+      @a << dp
+      total += dp.value
+    end
+    
+    assert_equal( total, @a.sum, "Failed to sum up items in a bucket corrrectly")
+  end
+  
 end
