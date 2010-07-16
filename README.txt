@@ -53,13 +53,17 @@ Time series data is essentially any data keyed on date and/or time.
   # Methods are added to each of the buckets for the selected
   # computations.  There are mutating (with !) and non mutating versions
 
-  # Add Exponentially weighted rolling average with a factor of 0.25,
-  # and a sliding window rolling mean with a window of two either side.
-  gigawatts.compute!( :ewra, :swrm, { :ewra_factor => 0.25, :swra_window = 2 } )
+  # Add Exponentially weighted rolling average with a factor of 0.25
+  gigawatts.calculate_ewra!( :factor => 0.25 )
+
+  # Add sliding window rolling average using 3 items from the left and 2 from
+  # the right of the point treating empty buckets as 0s
+  gigawatts.calculate_swra!( :window_left => 3, :window_right => 3, :nil_as => 0 )
 
   # Output the results
   gigawatts.each do |i|
     puts i.ewra
+    puts i.swra
   end
 
 == REQUIREMENTS:

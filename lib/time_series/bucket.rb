@@ -48,6 +48,10 @@ class TimeSeries::Bucket
     @data_points.length < 1
   end
   
+  def not_empty?
+    not self.empty?
+  end
+  
   def length
     @data_points.length
   end
@@ -55,6 +59,10 @@ class TimeSeries::Bucket
   def ==(other)
     self.period.eql?(other.period) && 
       ( other.collect == @data_points )
+  end
+  
+  def <=>(other)
+    self.period <=> other.period
   end
   
   alias eql? ==

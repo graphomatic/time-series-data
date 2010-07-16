@@ -38,9 +38,9 @@ class TimeSeries
   end
 
   def each( &block )
-    @buckets.each( &block )
+    @buckets.values.sort.each( &block )
   end
- 
+  
   # Class method to normalise times from
   # String, Date, DateTime or Time objects to Time objects
   def TimeSeries.Normalise_Time( time )
@@ -118,6 +118,31 @@ END
 
   def keys
     @buckets.keys
+  end
+  
+  def calculate_ewra!( options )
+    if options[ :factor ].nil?
+      factor = 0.25
+    else
+      factor = options[ :factor ]
+    end
+    
+    self.sort.find_all { |x| not x.empty? }.inject( nil ) do |previous, current|
+      if current.empty?
+        previous # No data so skip
+      elsif previous.nil?
+        current.instance_eval( "def ewra; self.sum; end" )
+        current
+      else        
+        scaled_factor = ( current.period - previous.period ) * ( 1 - factor )
+        
+        new_ewra = ( scaled_factor * previous.ewra ) +
+                   ( current.sum * ( 1 - scaled_factor ) )
+        # Create the instance method for the bucket
+        current.instance_eval( "def ewra; #{new_ewra}; end" )
+        current
+      end
+    end
   end
 
 protected

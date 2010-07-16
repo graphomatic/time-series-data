@@ -56,8 +56,14 @@ class TestTimeSeriesPeriod < Test::Unit::TestCase
     assert( @a == @b, "== operator comparison" )
     
     @a = TimeSeries::Period.new( "1st Jan 2010 12:45:30am", :year)
-    @b = TimeSeries::Period.new( "2st Jan 2010 12:45:30am", :month)  
-    assert( @a < @b, "< operator comparison" ) 
+    @b = TimeSeries::Period.new( "2nd Jan 2010 12:45:30am", :month)  
+    assert( @a < @b, "< operator comparison" )
+    
+    @a = TimeSeries::Period.new( "1st Jan 2010 12:45:30am", :day)
+    @b = TimeSeries::Period.new( "2nd Jan 2010 12:45:30am", :day)  
+    assert( @a < @b, "< operator comparison" )
+    assert( (not (@a > @b)), "< operator comparison" )
+    
   end
   
   def test_case_equality_positive
@@ -92,6 +98,15 @@ class TestTimeSeriesPeriod < Test::Unit::TestCase
     @a = TimeSeries::Period.new( @test_start_point, :month)
     @b = TimeSeries::Period.new( @test_start_point, :month)
     assert( @a.eql?( @b), "Two identical time periods not eql?" )
+  end
+  
+  def test_subtraction
+    @a = TimeSeries::Period.new( "Fri Jan 01 00:45:30 +0000 2010", :day)
+    @b = TimeSeries::Period.new( "Fri Jan 10 00:45:30 +0000 2010", :day)
+    
+    assert_equal( 0, @a - @a, "Difference between identical dates should be 0" )
+    assert_equal( 9, @b - @a, "Difference between dates should be 9" )
+    assert_equal( -9, @a - @b, "Difference between dates should be -9" )
   end
   
 end

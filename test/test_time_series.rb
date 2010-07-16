@@ -76,8 +76,7 @@ class TestTimeSeries < Test::Unit::TestCase
     
     assert( @a.eql?( @b),  "Two identical sets were not eql?")
   end
-  
-  
+   
   def test_retrieve_datapoint_slice
     # Four months of data into the collection
     @datapoints_june.each { |dp| @data[ :month] << dp }
@@ -93,9 +92,42 @@ class TestTimeSeries < Test::Unit::TestCase
     
   end
   
-  
-  def test_calculate
+  def test_calculate_ewra
+    start_date = Date.parse("1st July 2010")
+    expected = Array.new()
+    factor = 0.75
+    series = TimeSeries.new( :day )
     
+    expected[0] = 1
+    dp = TimeSeries::DataPoint.new( start_date + 1, 1 )
+    series << dp
+    (2..20).each do |i|
+      # Calculate the expected rolling average.
+      expected[i - 1] =
+        (
+          (
+            ( 
+              (i > 1) ? expected[i-2] :
+                        0
+            ) * 
+            ( 1 - factor ) 
+          ) +
+          ( factor * i )
+        ) 
+      # Build the time series
+      dp = TimeSeries::DataPoint.new( start_date + i, i )
+      series << dp
+    end
+    
+    expected = expected.collect{ |x| (x*1_000_000_000).to_i }
+    
+    # Calulate the EWRA
+    series.calculate_ewra!( :factor => factor )
+    
+    # Extract the results
+    got = series.collect { |bucket| (bucket.ewra * 1_000_000_000).to_i }
+    
+    assert_equal( expected, got, "Calculating the EWRA")
   end
 
 end

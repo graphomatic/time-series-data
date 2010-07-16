@@ -67,6 +67,17 @@ class TimeSeries::Period
     TimeSeries::Period.new( successor, @duration )
   end
   
+  def -(rhs)
+    if self == rhs
+      0
+    elsif self < rhs
+      0 - ( ( self ... rhs ).to_a.length )
+    else
+      ( rhs ... self ).to_a.length
+    end
+  end
+  
+  
   def stop
     # If the duration is :second then the start and stop are the same
     if @duration == :second
